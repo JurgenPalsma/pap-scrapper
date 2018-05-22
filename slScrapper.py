@@ -2,7 +2,6 @@
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen as uReq
 
-
 # Container Class that stores an ad's values
 class AdContainer(object):
     def __init__(self, price, size, link):
@@ -37,11 +36,11 @@ def getPageSoupFromUrl(url):
     return (soup(page_html, "html.parser"))
 
 def getAdsFromSelogerPage(url):
-
-#    page_soup = getPageSoupFromFile("./raw.html")
-    page_soup = getPageSoupFromUrl(url)
+    page_soup = getPageSoupFromFile("./html/raw.html")
+    #page_soup = getPageSoupFromUrl(url)
     ads = []
 
+    print(page_soup)
     containers = page_soup.findAll("div", {"class":"box search-results-item"})
     for container in containers:
         price = container.findAll("span", {"class":"price"})
@@ -64,18 +63,8 @@ def getAdsFromSelogerPage(url):
 
 # try:
 ads = getAdsFromSelogerPage('http://www.pap.fr/annonce/locations-appartement-paris-75-g439-jusqu-a-500-euros')
-ads.extend(getAdsFromSelogerPage('http://www.pap.fr/annonce/locations-appartement-paris-75-g439-jusqu-a-500-euros-2'))
-ads.extend(getAdsFromSelogerPage('http://www.pap.fr/annonce/locations-appartement-paris-75-g439-jusqu-a-500-euros-3'))
 #ads = getAdsFromSelogerPage("./raw.html")
 ads.sort(key = lambda x: x.numPrice)
 print("Top 3 cheapest ads:")
-ads[0].dumpAll()
-ads[1].dumpAll()
-ads[2].dumpAll()
-
-
-#getCheapestAd(ads)
-# except:
-#     print("Check your connection")
-# else:
-#     print("Job done")
+for a in ads:
+    a.dumpAll()
